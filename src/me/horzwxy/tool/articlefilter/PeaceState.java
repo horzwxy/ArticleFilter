@@ -23,7 +23,7 @@ public class PeaceState extends State {
         if("<article".startsWith(testContent)) {
             if("<article".equals(testContent)) {
                 getContent().append("<article");
-                return new InArticleState(this);
+                return new InArticleHeadState(this);
             }
             else {
                 buffer.append(c);

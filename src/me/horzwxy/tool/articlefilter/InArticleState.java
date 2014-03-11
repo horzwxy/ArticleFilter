@@ -18,12 +18,10 @@ public class InArticleState extends State {
 
     @Override
     public State transfer(char c) {
-        getContent().append(c);
         String testContent = buffer.toString() + c;
         if("</article>".startsWith(testContent)) {
             if("</article>".equals(testContent)) {
                 getCallback().appendOutput(getContent().toString());
-                System.out.println(getContent().toString());
                 return new PeaceState(this);
             }
             else {
