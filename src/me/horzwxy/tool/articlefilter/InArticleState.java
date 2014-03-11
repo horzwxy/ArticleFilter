@@ -19,9 +19,18 @@ public class InArticleState extends State {
     @Override
     public State transfer(char c) {
         String testContent = buffer.toString() + c;
-        if("</article>".startsWith(testContent)) {
+        if("<p".startsWith(testContent)) {
+            if("<p".equals(testContent)) {
+                return new InParaHeadState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
+        else if("</article>".startsWith(testContent)) {
             if("</article>".equals(testContent)) {
-                getCallback().appendOutput(getContent().toString());
+                getCallback().appendOutput(getContent().toString() + "</article>\n");
                 return new PeaceState(this);
             }
             else {

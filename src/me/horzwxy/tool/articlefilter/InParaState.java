@@ -9,12 +9,43 @@ package me.horzwxy.tool.articlefilter;
  */
 public class InParaState extends State {
 
+    private StringBuilder buffer;
+
     public InParaState(State oldState) {
         super(oldState);
+        buffer = new StringBuilder();
     }
 
     @Override
     public State transfer(char c) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        String testContent = buffer.toString() + c;
+        if("&nbsp;".startsWith(testContent)) {
+            if("&nbsp;".equals(testContent)) {
+                getContent().append("&#160;");
+                buffer = new StringBuilder();
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
+        if("</p>".startsWith(testContent)) {
+            if("</p>".equals(testContent)) {
+                getContent().append("</paragraph>\n");
+                return new InArticleState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
+        else {
+            if(buffer.length() != 0) {
+                getContent().append(buffer.toString());
+                buffer = new StringBuilder();
+            }
+            getContent().append(c);
+            return this;
+        }
     }
 }

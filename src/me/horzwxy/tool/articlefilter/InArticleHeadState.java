@@ -15,6 +15,12 @@ public class InArticleHeadState extends State {
 
     @Override
     public State transfer(char c) {
-        if()
+        if(c == '>') {
+            getContent().append("<article>\n");
+            return new InArticleState(this);
+        }
+        else {
+            return this;
+        }
     }
 }

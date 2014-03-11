@@ -15,6 +15,12 @@ public class InParaHeadState extends State {
 
     @Override
     public State transfer(char c) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if(c == '>') {
+            getContent().append("<paragraph>\n");
+            return new InParaState(this);
+        }
+        else {
+            return this;
+        }
     }
 }

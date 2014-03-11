@@ -22,7 +22,6 @@ public class PeaceState extends State {
         String testContent = buffer.toString() + c;
         if("<article".startsWith(testContent)) {
             if("<article".equals(testContent)) {
-                getContent().append("<article");
                 return new InArticleHeadState(this);
             }
             else {
