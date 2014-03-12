@@ -19,17 +19,20 @@ public class InParaState extends State {
     @Override
     public State transfer(char c) {
         String testContent = buffer.toString() + c;
+        // replace the escape letter representation
         if("&nbsp;".startsWith(testContent)) {
             if("&nbsp;".equals(testContent)) {
                 getContent().append("&#160;");
                 buffer = new StringBuilder();
+                return this;
             }
             else {
                 buffer.append(c);
                 return this;
             }
         }
-        if("</p>".startsWith(testContent)) {
+        // try to match ending tag
+        else if("</p>".startsWith(testContent)) {
             if("</p>".equals(testContent)) {
                 getContent().append("</paragraph>\n");
                 return new InArticleState(this);
@@ -40,12 +43,14 @@ public class InParaState extends State {
             }
         }
         else {
+            // fail to match a closing tag, must be in content or a decoration tag
             if(buffer.length() != 0) {
-                getContent().append(buffer.toString());
-                buffer = new StringBuilder();
+                return new InDecoHeadState(this);
             }
-            getContent().append(c);
-            return this;
+            else {
+                getContent().append(c);
+                return this;
+            }
         }
     }
 }
