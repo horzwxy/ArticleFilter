@@ -1,6 +1,10 @@
 package me.horzwxy.tool.articlefilter;
 
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +17,45 @@ public class BbcPurifier extends Purifier {
 
     @Override
     public File purifier(File inputFile) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Document doc;
+        try {
+            doc = getBuilder().parse(inputFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Document resultDoc = getBuilder().newDocument();
+        NodeList divs = doc.getElementsByTagName("div");
+        Element storyBodyNode = null;
+        for(int i = 0; i < divs.getLength(); i++) {
+            Element divNode = (Element)divs.item(i);
+            String className = divNode.getAttribute("class");
+
+            if (className != null && className.equals("story-body")) {
+                storyBodyNode = divNode;
+                break;
+            }
+        }
+        if(storyBodyNode == null) {
+            return null;
+        }
+
+        Element rootNode = resultDoc.createElement("article");
+        resultDoc.appendChild(rootNode);
+        NodeList childNodes = storyBodyNode.getChildNodes();
+        for(int i = 0; i < childNodes.getLength(); i++) {
+            Node childNode = childNodes.item(i);
+            if(childNode.getNodeName().equals("p")) {
+                Element pElement = resultDoc.createElement("paragraph");
+                pElement.setTextContent(childNode.getTextContent());
+                rootNode.appendChild(pElement);
+            }
+        }
+
+        return getOutputFile(inputFile, resultDoc);
     }
 }

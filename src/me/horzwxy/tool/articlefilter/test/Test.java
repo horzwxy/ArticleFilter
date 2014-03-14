@@ -21,11 +21,11 @@ import java.io.IOException;
 public class Test {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        ArticleFilter interpreter = new ArticleFilter(new File("example.html"));
+        ArticleFilter interpreter = new ArticleFilter(new File("example3.htm"));
         File outputFile = new File("output.xml");
         interpreter.doWork(outputFile);
 
-        Purifier purifier = Purifier.getPurifier("washingpost");
+        Purifier purifier = Purifier.getPurifier("bbc");
         purifier.purifier(outputFile);
     }
 

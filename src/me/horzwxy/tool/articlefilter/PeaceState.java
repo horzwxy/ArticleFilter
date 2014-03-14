@@ -29,6 +29,16 @@ public class PeaceState extends State {
                 return this;
             }
         }
+        if("<div".startsWith(testContent)) {
+            if("<div".equals(testContent)) {
+                getContent().append("<div");
+                return new InReservedHeadState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
         if("<script".startsWith(testContent)) {
             if("<script".equals(testContent)) {
                 return new InScriptState(this);

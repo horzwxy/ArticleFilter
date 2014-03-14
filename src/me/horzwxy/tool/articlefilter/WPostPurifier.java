@@ -6,15 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -28,22 +20,10 @@ public class WPostPurifier extends Purifier {
 
     @Override
     public File purifier(File inputFile) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        DocumentBuilder builder;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            return null;
-        }
+
         Document doc;
         try {
-            doc = builder.parse(inputFile);
+            doc = getBuilder().parse(inputFile);
         } catch (SAXException e) {
             e.printStackTrace();
             return null;
@@ -52,7 +32,7 @@ public class WPostPurifier extends Purifier {
             return null;
         }
 
-        Document resultDoc = builder.newDocument();
+        Document resultDoc = getBuilder().newDocument();
         Element rootElement = resultDoc.createElement("article");
         resultDoc.appendChild(rootElement);
 
@@ -79,32 +59,6 @@ public class WPostPurifier extends Purifier {
 
             }
         }
-
-        // Use a Transformer for output
-        TransformerFactory tFactory =
-                TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try {
-            transformer = tFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        DOMSource source = new DOMSource(resultDoc);
-        StreamResult result = null;
-        File resultFile = new File("result-" + inputFile.getName());
-        try {
-            result = new StreamResult(new FileOutputStream(resultFile));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            transformer.transform(source, result);
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
-
-        return resultFile;
+        return getOutputFile(inputFile, resultDoc);
     }
 }
