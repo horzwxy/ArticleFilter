@@ -19,7 +19,6 @@ public class ArticleFilter {
     public void doWork(File outputFile) {
         try {
             final PrintWriter writer = new PrintWriter(outputFile);
-            writer.print("<articles>\n");
 
             FilterCallback callback = new FilterCallback() {
                 @Override
@@ -36,10 +35,12 @@ public class ArticleFilter {
                     char c = line.charAt(i);
                     currentState = currentState.transfer(c);
                 }
+                currentState = currentState.transfer('\n');
                 line = reader.readLine();
             }
 
-            writer.print("</articles>\n");
+            writer.println(currentState.getContent().toString());
+
             writer.close();
             reader.close();
         } catch (FileNotFoundException e) {
