@@ -37,6 +37,24 @@ public class PeaceState extends State {
                 return this;
             }
         }
+        else if("<meta".startsWith(testContent)) {
+            if("<meta".equals(testContent)) {
+                return new InMetaState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
+        else if("<link".startsWith(testContent)) {
+            if("<link".equals(testContent)) {
+                return new InLinkState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
         else {
             if(buffer.length() != 0) {
                 getContent().append(buffer.toString());
