@@ -20,7 +20,7 @@ import java.io.IOException;
 public class Test {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        ArticleFilter interpreter = new ArticleFilter(new File("example.html"));
+        ArticleFilter interpreter = new ArticleFilter(new File("example3.htm"));
         interpreter.doWork(new File("output.xml"));
 
 //        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

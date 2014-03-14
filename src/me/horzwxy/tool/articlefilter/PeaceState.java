@@ -92,6 +92,15 @@ public class PeaceState extends State {
                 return this;
             }
         }
+        else if("<hr".startsWith(testContent)) {
+            if("<hr".equals(testContent)) {
+                return new InBypassedTag(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
         else if("<iframe".startsWith(testContent)) {
             if("<iframe".equals(testContent)) {
                 return new InFrameState(this);
