@@ -15,6 +15,6 @@ public class InArticleHeadState extends State {
 
     @Override
     public State transfer(char c) {
-        if()
+        return null;//if()
     }
 }
