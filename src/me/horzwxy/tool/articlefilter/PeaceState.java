@@ -55,6 +55,15 @@ public class PeaceState extends State {
                 return this;
             }
         }
+        else if("<iframe".startsWith(testContent)) {
+            if("<iframe".equals(testContent)) {
+                return new InFrameState(this);
+            }
+            else {
+                buffer.append(c);
+                return this;
+            }
+        }
         else {
             if(buffer.length() != 0) {
                 getContent().append(buffer.toString());
