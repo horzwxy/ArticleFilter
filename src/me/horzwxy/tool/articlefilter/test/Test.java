@@ -1,6 +1,7 @@
 package me.horzwxy.tool.articlefilter.test;
 
 import me.horzwxy.tool.articlefilter.ArticleFilter;
+import me.horzwxy.tool.articlefilter.Purifier;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -20,14 +21,12 @@ import java.io.IOException;
 public class Test {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        ArticleFilter interpreter = new ArticleFilter(new File("example3.htm"));
-        interpreter.doWork(new File("output.xml"));
+        ArticleFilter interpreter = new ArticleFilter(new File("example.html"));
+        File outputFile = new File("output.xml");
+        interpreter.doWork(outputFile);
 
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        Document doc = builder.parse(new File("example.html"));
-//        System.out.println(doc.getElementsByTagName("article"));
+        Purifier purifier = Purifier.getPurifier("washingpost");
+        purifier.purifier(outputFile);
     }
 
 }
