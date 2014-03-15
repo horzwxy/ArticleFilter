@@ -46,13 +46,21 @@ public class BbcPurifier extends Purifier {
 
         Element rootNode = resultDoc.createElement("article");
         resultDoc.appendChild(rootNode);
+
+        Element titleNode = resultDoc.createElement("title");
+        rootNode.appendChild(titleNode);
+        titleNode.setTextContent(doc.getElementsByTagName("title").item(0).getTextContent());
+
+        Element contentNode = resultDoc.createElement("content");
+        rootNode.appendChild(contentNode);
+
         NodeList childNodes = storyBodyNode.getChildNodes();
         for(int i = 0; i < childNodes.getLength(); i++) {
             Node childNode = childNodes.item(i);
             if(childNode.getNodeName().equals("p")) {
                 Element pElement = resultDoc.createElement("paragraph");
                 pElement.setTextContent(childNode.getTextContent());
-                rootNode.appendChild(pElement);
+                contentNode.appendChild(pElement);
             }
         }
 

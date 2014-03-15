@@ -36,6 +36,13 @@ public class WPostPurifier extends Purifier {
         Element rootElement = resultDoc.createElement("article");
         resultDoc.appendChild(rootElement);
 
+        Element titleElement = resultDoc.createElement("title");
+        titleElement.setTextContent(doc.getElementsByTagName("title").item(0).getTextContent());
+        rootElement.appendChild(titleElement);
+
+        Element contentElement = resultDoc.createElement("content");
+        rootElement.appendChild(contentElement);
+
         NodeList articleNodes = doc.getElementsByTagName("article");
         for (int i = 0; i < articleNodes.getLength(); i++) {
             Node articleNode = articleNodes.item(i);
@@ -53,7 +60,7 @@ public class WPostPurifier extends Purifier {
                     String textContent = textBuilder.toString().trim();
                     if(textContent.length() != 0) {
                         pElement.setTextContent(textContent);
-                        rootElement.appendChild(pElement);
+                        contentElement.appendChild(pElement);
                     }
                 }
 
